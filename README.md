@@ -17,4 +17,4 @@
 - 나머지 파일: Visual Studio 프로젝트 파일
 
 ## 개발 보고서
-https://www.notion.so/1504bed4b2b38003a1bfc26f996d57ca
+https://www.notion.so/1504bed4b2b38003a1bfc26f996d57ca (신수민)
