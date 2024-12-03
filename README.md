@@ -15,3 +15,6 @@
 ## 구성
 - Program 폴더: 실행 파일, 인공지능 모델, .py파일, log.txt
 - 나머지 파일: Visual Studio 프로젝트 파일
+
+## 개발 보고서
+https://www.notion.so/1504bed4b2b38003a1bfc26f996d57ca
