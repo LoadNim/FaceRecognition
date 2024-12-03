@@ -121,7 +121,7 @@ BOOL CFaceRecognitionFinalDlg::OnInitDialog()
 	m_cImg.Create(m_winSize.width, m_winSize.height, 24);
 
 	// Haarcascade 모델 설정
-	if (m_model.load("C:/opencv/sources/data/haarcascades/haarcascade_frontalface_default.xml"));
+	if (m_model.load("haarcascade_frontalface_default.xml"));
 	else
 	{
 		AfxMessageBox(_T("Haarcascade xml 경로가 잘못되었습니다."), MB_OK | MB_ICONWARNING);
