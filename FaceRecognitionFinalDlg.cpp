@@ -269,6 +269,9 @@ void CFaceRecognitionFinalDlg::ShowImg(CStatic& ctrl, CImage& cImg)
 void CFaceRecognitionFinalDlg::CreateImg()
 {
 	// TODO: 여기에 구현 코드 추가.
+	m_matImg = GetFrame();
+	MatToCImage(m_matImg, m_cImg, rect);
+	ShowImg(m_ctrlCrop, m_cImg);
 	std::string filename = "LastImg.jpg";
 	cv::imwrite(filename, m_matImg);
 	int ret = system("comp.py");
