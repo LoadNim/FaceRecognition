@@ -6,6 +6,7 @@
 #include "opencv2/opencv.hpp"
 #include <fstream>
 #include "Modal.h"
+#include <Python.h>
 
 // CFaceRecognitionFinalDlg 대화 상자
 class CFaceRecognitionFinalDlg : public CDialogEx
@@ -26,7 +27,6 @@ public:
 // 구현입니다.
 protected:
 	HICON m_hIcon;
-
 	// 생성된 메시지 맵 함수
 	virtual BOOL OnInitDialog();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
@@ -43,6 +43,8 @@ public:
 	cv::Size m_winSize;								// CImage 레이아웃 정의용 변수
 	std::ifstream file;								// 인공지능에서 결과 값을 가져오기 위한 파일 객체
 	float m_fConfidence;							// 결과 값
+	PyObject* m_pModule;						// 파이썬 객체
+	PyObject* m_pFunc;							// 파이썬 함수 객체
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	cv::Mat GetFrame();
 	void CropFace(bool is_Modal);

@@ -136,7 +136,54 @@ BOOL CFaceRecognitionFinalDlg::OnInitDialog()
 		return -1;
 	}
 	m_fConfidence = 0.0;
+
+	// 파이썬 인터프리터 초기화
+	Py_Initialize();
+	if (!Py_IsInitialized())
+	{
+		AfxMessageBox(_T("파이썬 인터프리터 초기화에 실패하였습니다."), MB_OK | MB_ICONWARNING);
+		return -1;
+	}
 	
+	// 디렉토리 추출 후 sys.path에 추가
+	TCHAR szPath[MAX_PATH];
+	GetModuleFileName(NULL, szPath, MAX_PATH);
+	CString exePath(szPath);
+	int pos = exePath.ReverseFind(_T('\\'));
+	if (pos != -1)
+	{
+		exePath = exePath.Left(pos);
+	}
+
+	PyObject* syspath = PySys_GetObject("path");
+	PyObject* pPath = PyUnicode_FromWideChar(exePath, exePath.GetLength());
+	PyList_Append(syspath, pPath);
+	Py_DECREF(pPath);
+
+
+	// 파이썬 모듈 임포트
+	PyObject* pName = PyUnicode_FromString("test");
+	m_pModule = PyImport_Import(pName);
+	Py_DECREF(pName);
+	if (!m_pModule)
+	{
+		AfxMessageBox(_T("파이썬 파일 연동에 실패하였습니다."), MB_OK | MB_ICONWARNING);
+		return -1;
+	}
+
+
+	//// 모듈 내 함수 객체 초기화
+	//m_pFunc = PyObject_GetAttrString(m_pModule, "predict");
+	//if (!m_pFunc || !PyCallable_Check(m_pFunc))
+	//{
+	//	AfxMessageBox(_T("파이썬 함수를 가져오지 못했습니다."), MB_OK | MB_ICONWARNING);
+	//	Py_XDECREF(m_pFunc);
+	//	Py_XDECREF(m_pModule);
+	//	m_pFunc = NULL;
+	//	m_pModule = NULL;
+	//	return -1;
+	//}
+
 	// 한 프레임씩 화면에 출력하게 타이머 설정
 	SetTimer(0, 33, NULL);
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
@@ -304,5 +351,10 @@ void CFaceRecognitionFinalDlg::ViewResult()
 	else
 	{
 		AfxMessageBox(_T("얼굴이 인식되지 않았습니다."), MB_OK | MB_ICONWARNING);
+	}
+
+	if (AfxMessageBox(_T("프로그램을 종료합니까?"), MB_YESNO | MB_ICONQUESTION) == IDYES)
+	{
+		AfxGetMainWnd()->SendMessage(WM_CLOSE);
 	}
 }
